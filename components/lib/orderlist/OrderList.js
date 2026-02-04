@@ -69,7 +69,14 @@ export const OrderList = React.memo(
             if (selected) {
                 newSelection = metaKey ? selectionState.filter((_, i) => i !== selectedIndex) : [value];
             } else {
-                newSelection = metaKey ? [...selectionState, value] : [value];
+                if (metaKey) {
+                    const merged = [...selectionState, value];
+                    const list = props.value || [];
+
+                    newSelection = merged.sort((a, b) => list.indexOf(a) - list.indexOf(b));
+                } else {
+                    newSelection = [value];
+                }
             }
 
             setSelectionState(newSelection);
